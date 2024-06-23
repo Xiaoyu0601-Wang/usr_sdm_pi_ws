@@ -4,6 +4,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+#include "usr_sdm_controller/can_protocol.hpp"
+
 using namespace std::chrono_literals;
 
 class USRSDM : public rclcpp::Node
@@ -30,6 +32,8 @@ class USRSDM : public rclcpp::Node
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     size_t count_;
+
+    amp::usrsdm::CANProtocol can;
 };
 
 int main(int argc, char * argv[])

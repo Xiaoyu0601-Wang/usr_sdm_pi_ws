@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8)
 project(usr_sdm_controller)
 
 # Default to C99
@@ -24,7 +24,16 @@ find_package(std_msgs REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-add_executable(usr_sdm_controller src/usr_sdm_controller.cpp)
+find_library(WIRINGPI_LIB NAMES wiringPi PATHS /usr/lib)
+
+include_directories(
+  include
+  ${Eigen_INCLUDE_DIRS}
+  /usr/include
+)
+
+add_executable(usr_sdm_controller src/usr_sdm_controller.cpp src/can_protocol.cpp)
+target_link_libraries(usr_sdm_controller ${WIRINGPI_LIB})
 ament_target_dependencies(usr_sdm_controller rclcpp std_msgs)
 
 install(TARGETS
