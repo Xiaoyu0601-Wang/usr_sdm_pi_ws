@@ -24,8 +24,11 @@ class CANProtocol
 
   protected:
     const int SPI_CHAN = 0;
+    const int SPI_CS_PIN = 10;
 
     void interfaceSetup (int speed);
+    void startCAN();
+    void endCAN();
 };
 
 } //usrsdm

@@ -18,12 +18,25 @@ CANProtocol::~CANProtocol() {}
 void CANProtocol::interfaceSetup(int speed)
 {
 	wiringPiSetup() ;
+	pinMode(SPI_CS_PIN, OUTPUT) ;
 
 	if (wiringPiSPISetup(SPI_CHAN, speed) < 0)
 	{
 		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno)) ;
 		exit(EXIT_FAILURE) ;
 	}
+}
+
+void CANProtocol::startCAN()
+{
+	digitalWrite(SPI_CS_PIN, LOW);
+    std::cout << "Start CAN Interface" << std::endl;
+}
+
+void CANProtocol::endCAN()
+{
+	digitalWrite(SPI_CS_PIN, HIGH);
+    std::cout << "End CAN Interface" << std::endl;
 }
 
 } //usrsdm

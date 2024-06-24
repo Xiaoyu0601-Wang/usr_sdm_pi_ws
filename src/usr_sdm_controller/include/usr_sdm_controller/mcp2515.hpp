@@ -1,12 +1,8 @@
-#ifndef _MCP2515_H_
-#define _MCP2515_H_
+#ifndef MCP2515_HPP_
+#define MCP2515_HPP_
 
-#include "can.h"
-
-#include "hardware/spi.h"
-#include "pico/time.h"
-#include "pico/stdlib.h"
-#include "boards/pico.h"
+#include <wiringPi.h>
+#include <wiringPiSPI.h>
 
 /*
  *  Speed 8M
