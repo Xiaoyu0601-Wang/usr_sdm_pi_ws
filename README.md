@@ -3,6 +3,7 @@ ROS2 Humble Workspace of Raspberry Pi Controller for Underwater Snake-like Robot
 
 # Installation
 You can either build it yourself or use the prebuilt binaries:
+  - Ubuntu 22.04 Server
   - ROS2 Humble
   - WiringPi (for RS485-CAN-HAT)
   - Realsense (for iD405)
