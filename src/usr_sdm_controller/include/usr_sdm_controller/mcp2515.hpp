@@ -1,6 +1,11 @@
 #ifndef MCP2515_HPP_
 #define MCP2515_HPP_
 
+#include <iostream>
+#include <cerrno>
+#include <cstring>
+#include <cstdio>
+
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
@@ -449,7 +454,7 @@ class MCP2515 {
             CANINTF  CANINTF_RXnIF;
         } RXB[N_RXBUFFERS];
 
-        spi_inst_t* SPI_CHANNEL;
+        uint8_t SPI_CHANNEL;
         uint8_t SPI_CS_PIN;
 
     private:
@@ -468,14 +473,7 @@ class MCP2515 {
         void prepareId(uint8_t *buffer, const bool ext, const uint32_t id);
     
     public:
-        MCP2515(
-            spi_inst_t* CHANNEL = spi0,
-            uint8_t CS_PIN = PICO_DEFAULT_SPI_CSN_PIN,
-            uint8_t TX_PIN = PICO_DEFAULT_SPI_TX_PIN,
-            uint8_t RX_PIN = PICO_DEFAULT_SPI_RX_PIN,
-            uint8_t SCK_PIN = PICO_DEFAULT_SPI_SCK_PIN,
-            uint32_t _SPI_CLOCK = DEFAULT_SPI_CLOCK
-        );
+        void initial(uint8_t CHANNEL, uint8_t CS_PIN, uint8_t SPI_CLOCK);
         ERROR reset(void);
         ERROR setConfigMode();
         ERROR setListenOnlyMode();

@@ -17,13 +17,13 @@ CANProtocol::~CANProtocol() {}
 
 void CANProtocol::interfaceSetup(int speed)
 {
-	wiringPiSetup() ;
-	pinMode(SPI_CS_PIN, OUTPUT) ;
+	wiringPiSetup();
+	pinMode(SPI_CS_PIN, OUTPUT);
 
 	if (wiringPiSPISetup(SPI_CHAN, speed) < 0)
 	{
-		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno)) ;
-		exit(EXIT_FAILURE) ;
+		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno));
+		exit(EXIT_FAILURE);
 	}
 }
 

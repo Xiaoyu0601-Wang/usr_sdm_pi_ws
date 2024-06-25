@@ -12,32 +12,35 @@ const struct MCP2515::RXBn_REGS MCP2515::RXB[N_RXBUFFERS] = {
     {MCP_RXB1CTRL, MCP_RXB1SIDH, MCP_RXB1DATA, CANINTF_RX1IF}
 };
 
-MCP2515::MCP2515(spi_inst_t* CHANNEL, uint8_t CS_PIN, uint8_t TX_PIN, uint8_t RX_PIN, uint8_t SCK_PIN, uint32_t SPI_CLOCK)
+void MCP2515::initial(uint8_t CHANNEL, uint8_t CS_PIN, uint8_t SPI_CLOCK)
 {
     this->SPI_CHANNEL = CHANNEL;
-    spi_init(this->SPI_CHANNEL, SPI_CLOCK);
-    gpio_set_function(TX_PIN, GPIO_FUNC_SPI);
-    gpio_set_function(RX_PIN, GPIO_FUNC_SPI);
-    gpio_set_function(SCK_PIN, GPIO_FUNC_SPI);
-    spi_set_format(this->SPI_CHANNEL, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
-
     this->SPI_CS_PIN = CS_PIN;
-    gpio_init(this->SPI_CS_PIN);
-    gpio_set_dir(this->SPI_CS_PIN, GPIO_OUT);
+
+	wiringPiSetup();
+	pinMode(this->SPI_CS_PIN, OUTPUT);
+
+	if (wiringPiSPISetup(this->SPI_CHANNEL, SPI_CLOCK) < 0)
+	{
+		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror (errno)) ;
+		exit(EXIT_FAILURE) ;
+	}
+
+//    spi_set_format(this->SPI_CHANNEL, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
 
     endSPI();
 }
 
-inline void MCP2515::startSPI() {
-    asm volatile("nop \n nop \n nop");
-    gpio_put(this->SPI_CS_PIN, 0);
-    asm volatile("nop \n nop \n nop");
+inline void MCP2515::startSPI()
+{
+    digitalWrite(this->SPI_CS_PIN, LOW);
+    std::cout << "Start SPI Interface" << std::endl;
 }
 
-inline void MCP2515::endSPI() {
-    asm volatile("nop \n nop \n nop");
-    gpio_put(this->SPI_CS_PIN, 1);
-    asm volatile("nop \n nop \n nop");
+inline void MCP2515::endSPI()
+{
+    digitalWrite(this->SPI_CS_PIN, 1);
+    std::cout << "End SPI Interface" << std::endl;
 }
 
 MCP2515::ERROR MCP2515::reset(void)
@@ -104,12 +107,13 @@ uint8_t MCP2515::readRegister(const REGISTER reg)
         reg
     };
 
-    spi_write_blocking(this->SPI_CHANNEL, data, 2);
+//    spi_write_blocking(this->SPI_CHANNEL, data, 2);
+    wiringPiSPIDataRW (this->SPI_CHANNEL, data, 2);
 
     uint8_t ret;
     spi_read_blocking(this->SPI_CHANNEL, 0x00, &ret, 1);
 
-    endSPI();
+//    endSPI();
 
     return ret;
 }
@@ -122,7 +126,8 @@ void MCP2515::readRegisters(const REGISTER reg, uint8_t values[], const uint8_t 
         INSTRUCTION_READ,
         reg
     };
-    spi_write_blocking(this->SPI_CHANNEL, data, 2);
+//    spi_write_blocking(this->SPI_CHANNEL, data, 2);
+    wiringPiSPIDataRW (this->SPI_CHANNEL, data, 2);
 
     spi_read_blocking(this->SPI_CHANNEL, 0x00, values, n);
 
@@ -138,7 +143,8 @@ void MCP2515::setRegister(const REGISTER reg, const uint8_t value)
         reg,
         value
     };
-    spi_write_blocking(this->SPI_CHANNEL, data, 3);
+//    spi_write_blocking(this->SPI_CHANNEL, data, 3);
+    wiringPiSPIDataRW (this->SPI_CHANNEL, data, 3);
 
     endSPI();
 }
