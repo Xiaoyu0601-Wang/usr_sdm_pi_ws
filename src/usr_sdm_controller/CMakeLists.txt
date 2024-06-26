@@ -32,7 +32,7 @@ include_directories(
   /usr/include
 )
 
-add_executable(usr_sdm_controller src/usr_sdm_controller.cpp src/can_protocol.cpp)
+add_executable(usr_sdm_controller src/usr_sdm_controller.cpp src/can_protocol.cpp src/mcp_can_rpi.cpp)
 target_link_libraries(usr_sdm_controller ${WIRINGPI_LIB})
 ament_target_dependencies(usr_sdm_controller rclcpp std_msgs)
 
