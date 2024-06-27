@@ -16,7 +16,7 @@ class USRSDM : public rclcpp::Node
     , count_(0)
     {
     	publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
-    	timer_ = this->create_wall_timer(500ms, std::bind(&USRSDM::timer_callback, this));
+    	timer_ = this->create_wall_timer(2000ms, std::bind(&USRSDM::timer_callback, this));
     }
 
   private:

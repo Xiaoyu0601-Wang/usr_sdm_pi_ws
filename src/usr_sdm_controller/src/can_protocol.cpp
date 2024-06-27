@@ -10,34 +10,51 @@ namespace usrsdm
 
 CANProtocol::CANProtocol()
 {
-	interfaceSetup(2);
+	interfaceSetup();
+	printf("CAN initialized.\n");
 }
 
 CANProtocol::~CANProtocol() {}
 
-void CANProtocol::interfaceSetup(int speed)
+void CANProtocol::interfaceSetup(void)
 {
+	CAN.init_Para(SPI_CHANNEL, 2000000, IntPIN, SPI_CS_PIN);
 	wiringPiSetup();
-	pinMode(SPI_CS_PIN, OUTPUT);
 
-	if (wiringPiSPISetup(SPI_CHAN, speed) < 0)
-	{
-		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
-	}
+//    int result = wiringPiSetupGpio();
+//    if (!result)
+//    {
+//        printf("Gpio started\n");
+//    }
+//    else
+//    {
+//        printf("Gpio startup fail\n");
+//    }
+//    pinMode(8, OUTPUT);
+//    digitalWrite(8, HIGH);
+
+	CAN.setupInterruptGpio();
+    CAN.setupSpi();
+    printf("GPIO Pins initialized & SPI started\n");
+
+//	if (wiringPiSPISetup(SPI_CHAN, speed) < 0)
+//	{
+//		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno));
+//		exit(EXIT_FAILURE);
+//	}
 }
 
-void CANProtocol::startCAN()
-{
-	digitalWrite(SPI_CS_PIN, LOW);
-    std::cout << "Start CAN Interface" << std::endl;
-}
-
-void CANProtocol::endCAN()
-{
-	digitalWrite(SPI_CS_PIN, HIGH);
-    std::cout << "End CAN Interface" << std::endl;
-}
+//void CANProtocol::startCAN()
+//{
+//	digitalWrite(SPI_CS_PIN, LOW);
+//    std::cout << "Start CAN Interface" << std::endl;
+//}
+//
+//void CANProtocol::endCAN()
+//{
+//	digitalWrite(SPI_CS_PIN, HIGH);
+//    std::cout << "End CAN Interface" << std::endl;
+//}
 
 } //usrsdm
 } //amp

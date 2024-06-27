@@ -26,7 +26,7 @@ private:
     uint8_t m_nRtr;                                                       // Remote request flag
     uint8_t m_nfilhit;                                                    // The number of the filter that matched the message
 //    uint8_t   MCPCS;  (NOT NEEDED, wiringPi already handles CS pin)     // Chip Select pin number
-    const uint8_t MCP_CS_PIN = 10;
+//    const uint8_t MCP_CS_PIN = 10;
     uint8_t mcpMode;                                                      // Mode to return to after configurations are performed.
 
     int spi_channel;
@@ -100,7 +100,7 @@ private:
     uint8_t sendMsg();                                                        // Send message
 
 public:
-    MCP_CAN(int spi_channel, int spi_baudrate, uint8_t gpio_can_interrupt, uint8_t gpio_can_cs);
+    void init_Para(int spi_channel, int spi_baudrate, uint8_t gpio_can_interrupt, uint8_t gpio_can_cs);
     uint8_t begin(uint8_t idmodeset, uint8_t speedset, uint8_t clockset);     // Initilize controller prameters
     uint8_t init_Mask(uint8_t num, uint8_t ext, uint32_t ulData);             // Initilize Mask(s)
     uint8_t init_Mask(uint8_t num, uint32_t ulData);                        // Initilize Mask(s)

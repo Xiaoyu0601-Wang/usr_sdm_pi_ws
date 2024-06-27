@@ -6,10 +6,10 @@
 *********************************************************************************************************/
 void MCP_CAN::spiTransfer(uint8_t byte_number, unsigned char *buf)
 {
-    digitalWrite(MCP_CS_PIN, LOW);
+    digitalWrite(gpio_can_cs, LOW);
     wiringPiSPIDataRW(spi_channel, buf, byte_number);
     nanosleep(&delay_spi_can, (struct timespec *)NULL);
-    digitalWrite(MCP_CS_PIN, HIGH);
+    digitalWrite(gpio_can_cs, HIGH);
 }
 
 
@@ -31,6 +31,8 @@ bool MCP_CAN::setupInterruptGpio()
     }
 
     pinMode(gpio_can_interrupt, INPUT);
+    pinMode(8, OUTPUT);//(gpio_can_cs, OUTPUT);
+    digitalWrite(8, LOW);//(gpio_can_cs, LOW);
 
     struct timespec req;
     req.tv_sec = 0;        // seconds
@@ -851,7 +853,7 @@ uint8_t MCP_CAN::mcp2515_getNextFreeTXBuf(uint8_t *txbuf_n)                 /* g
 ** Function name:           MCP_CAN
 ** Descriptions:            Public function to declare CAN class and the /CS pin.
 *********************************************************************************************************/
-MCP_CAN::MCP_CAN(int spi_channel, int spi_baudrate, uint8_t gpio_can_interrupt, uint8_t gpio_can_cs)
+void MCP_CAN::init_Para(int spi_channel, int spi_baudrate, uint8_t gpio_can_interrupt, uint8_t gpio_can_cs)
 {
     this->spi_channel        = spi_channel;
     this->spi_baudrate       = spi_baudrate;
