@@ -4,6 +4,8 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
+#include <iostream>
+#include <memory>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib> // For malloc and free
@@ -125,6 +127,8 @@ public:
     bool setupInterruptGpio();
     bool setupSpi();
     bool canReadData();
+
+    typedef std::unique_ptr<MCP_CAN> Ptr;
 };
 
 #endif

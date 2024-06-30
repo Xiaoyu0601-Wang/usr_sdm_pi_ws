@@ -6,10 +6,10 @@
 *********************************************************************************************************/
 void MCP_CAN::spiTransfer(uint8_t byte_number, unsigned char *buf)
 {
-    digitalWrite(gpio_can_cs, LOW);
+//    digitalWrite(gpio_can_cs, LOW);
     wiringPiSPIDataRW(spi_channel, buf, byte_number);
     nanosleep(&delay_spi_can, (struct timespec *)NULL);
-    digitalWrite(gpio_can_cs, HIGH);
+//    digitalWrite(gpio_can_cs, HIGH);
 }
 
 
@@ -19,6 +19,7 @@ void MCP_CAN::spiTransfer(uint8_t byte_number, unsigned char *buf)
 *********************************************************************************************************/
 bool MCP_CAN::setupInterruptGpio()
 {
+	wiringPiSetup();
     int result = wiringPiSetupGpio();
     if (!result)
     {
@@ -31,8 +32,8 @@ bool MCP_CAN::setupInterruptGpio()
     }
 
     pinMode(gpio_can_interrupt, INPUT);
-    pinMode(8, OUTPUT);//(gpio_can_cs, OUTPUT);
-    digitalWrite(8, LOW);//(gpio_can_cs, LOW);
+    pinMode(gpio_can_cs, OUTPUT);//(8, OUTPUT);//
+    digitalWrite(gpio_can_cs, LOW);//(8, LOW);//HIGH
 
     struct timespec req;
     req.tv_sec = 0;        // seconds
@@ -50,12 +51,19 @@ bool MCP_CAN::setupInterruptGpio()
 *********************************************************************************************************/
 bool MCP_CAN::setupSpi()
 {
-    int result_spi = wiringPiSPISetup(spi_channel, spi_baudrate);
-    printf("Started SPI : %d\n", result_spi);
-    if (result_spi < 0)
-    {
-        return false;
-    }
+//    int result_spi = wiringPiSPISetup(spi_channel, spi_baudrate);
+//    printf("Started SPI : %d\n", result_spi);
+//    if (result_spi < 0)
+//    {
+//        return false;
+//    }
+
+	if (wiringPiSPISetup(this->spi_channel, this->spi_baudrate) < 0)
+	{
+		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+
     struct timespec req;
     req.tv_sec = 0;        // seconds
     req.tv_nsec = 500000L; // nanoseconds

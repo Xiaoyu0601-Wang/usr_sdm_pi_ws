@@ -15,6 +15,9 @@ class USRSDM : public rclcpp::Node
     : Node("usr_sdm_controller")
     , count_(0)
     {
+    	can.reset(new amp::usrsdm::CANProtocol);
+    	can->interfaceSetup();
+
     	publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     	timer_ = this->create_wall_timer(2000ms, std::bind(&USRSDM::timer_callback, this));
     }
@@ -33,7 +36,8 @@ class USRSDM : public rclcpp::Node
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     size_t count_;
 
-    amp::usrsdm::CANProtocol can;
+//    amp::usrsdm::CANProtocol can;
+    amp::usrsdm::CANProtocol::Ptr can;
 };
 
 int main(int argc, char * argv[])
