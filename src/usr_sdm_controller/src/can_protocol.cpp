@@ -48,47 +48,68 @@ void CANProtocol::interfaceSetup(void)
 {
 	CAN.reset(new MCP_CAN);
 
-	CAN->init_Para(SPI_CHANNEL, 2000000, IntPIN, SPI_CS_PIN);
-	wiringPiSetup();
+	CAN->init_Para(SPI_CHANNEL, 2000000, SPI_INT_PIN, SPI_CS_PIN);
 
-    int result = wiringPiSetupGpio();
-    if (!result)
-    {
-        printf("Gpio started\n");
-    }
-    else
-    {
-        printf("Gpio startup fail\n");
-    }
-    pinMode(8, OUTPUT);
-    digitalWrite(8, LOW);
-
-//	CAN->setupInterruptGpio();
-//    CAN->setupSpi();
+//	wiringPiSetup();
+//    int result = wiringPiSetupGpio();
+//    if (!result)
+//    {
+//        printf("Gpio started\n");
+//    }
+//    else
+//    {
+//        printf("Gpio startup fail\n");
+//    }
+//
+//    pinMode(SPI_INT_PIN, INPUT);
+//    wiringPiSetupGpio();
+//    pinMode(SPI_CS_PIN, OUTPUT);//(8, OUTPUT);//
+//    digitalWrite(SPI_CS_PIN, LOW);//(8, LOW);//HIGH
+////    wiringPiSetupGpio();
+//
+//    struct timespec req;
+//    req.tv_sec = 0;        // seconds
+//    req.tv_nsec = 500000L; // nanoseconds
+//    nanosleep(&req, nullptr);
+//
+//	if (wiringPiSPISetup(SPI_CHANNEL, 2000000) < 0)
+//	{
+//		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno));
+//		exit(EXIT_FAILURE);
+//	}
+//
+//    nanosleep(&req, nullptr);
 //    printf("GPIO Pins initialized & SPI started\n");
 //
-//    // Attach interrupt to read incoming messages
-//    wiringPiISR(IntPIN, INT_EDGE_FALLING, printCANMsg);
-//
-//    /* Start CAN bus
-//     * uint8_t begin(uint8_t idmodeset, uint8_t speedset, uint8_t clockset);
-//     */
-//
-//    while (CAN_OK != CAN->begin(MCP_ANY, CANSpeed, MCPClock))
-//    {
-//        printf("CAN BUS Shield init fail\n");
-//        printf("Trying to init CAN BUS Shield again\n\n");
-//
-//        struct timespec req;
-//        req.tv_sec = 1;        // seconds
-//        req.tv_nsec = 0; // nanoseconds
-//        nanosleep(&req, nullptr);
-//    }
-//    printf("CAN BUS Shield init ok!\n");
-//    CAN->setMode(MCPMode);
-//
-//    uint8_t  data[8] = { 3, 14, 15, 2, 1, 2, 3, 4 };
-//    printf("\n\nMessage sent: %d\n", CAN->sendMsgBuf(5, 0, 8, data));
+//	// Attach interrupt to read incoming messages
+//	wiringPiISR(SPI_INT_PIN, INT_EDGE_FALLING, printCANMsg);
+/////////////////////////////////////////////////////////////
+	CAN->setupInterruptGpio();
+    CAN->setupSpi();
+    printf("GPIO Pins initialized & SPI started\n");
+
+    // Attach interrupt to read incoming messages
+//    wiringPiISR(SPI_INT_PIN, INT_EDGE_FALLING, printCANMsg);
+
+    /* Start CAN bus
+     * uint8_t begin(uint8_t idmodeset, uint8_t speedset, uint8_t clockset);
+     */
+
+    while (CAN_OK != CAN->begin(MCP_ANY, CANSpeed, MCPClock))
+    {
+        printf("CAN BUS Shield init fail\n");
+        printf("Trying to init CAN BUS Shield again\n\n");
+
+        struct timespec req;
+        req.tv_sec = 1;        // seconds
+        req.tv_nsec = 0; // nanoseconds
+        nanosleep(&req, nullptr);
+    }
+    printf("CAN BUS Shield init ok!\n");
+    CAN->setMode(MCPMode);
+
+    uint8_t  data[8] = { 3, 14, 15, 2, 1, 2, 3, 4 };
+    printf("\n\nMessage sent: %d\n", CAN->sendMsgBuf(5, 0, 8, data));
 }
 
 //void CANProtocol::startCAN()

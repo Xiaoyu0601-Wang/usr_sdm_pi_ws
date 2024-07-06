@@ -6,9 +6,9 @@
 *********************************************************************************************************/
 void MCP_CAN::spiTransfer(uint8_t byte_number, unsigned char *buf)
 {
-//    digitalWrite(gpio_can_cs, LOW);
-    wiringPiSPIDataRW(spi_channel, buf, byte_number);
-    nanosleep(&delay_spi_can, (struct timespec *)NULL);
+    digitalWrite(this->gpio_can_cs, LOW);
+    wiringPiSPIDataRW(this->spi_channel, buf, byte_number);
+//    nanosleep(&delay_spi_can, (struct timespec *)NULL);
 //    digitalWrite(gpio_can_cs, HIGH);
 }
 
@@ -31,9 +31,10 @@ bool MCP_CAN::setupInterruptGpio()
         return false;
     }
 
-    pinMode(gpio_can_interrupt, INPUT);
-    pinMode(gpio_can_cs, OUTPUT);//(8, OUTPUT);//
-    digitalWrite(gpio_can_cs, LOW);//(8, LOW);//HIGH
+    pinMode(this->gpio_can_interrupt, INPUT);
+//    wiringPiSetupGpio();
+    pinMode(this->gpio_can_cs, OUTPUT);//(8, OUTPUT);//
+    digitalWrite(this->gpio_can_cs, LOW);//(8, LOW);//HIGH
 
     struct timespec req;
     req.tv_sec = 0;        // seconds
@@ -57,7 +58,7 @@ bool MCP_CAN::setupSpi()
 //    {
 //        return false;
 //    }
-
+//	digitalWrite(gpio_can_cs, LOW);
 	if (wiringPiSPISetup(this->spi_channel, this->spi_baudrate) < 0)
 	{
 		fprintf(stderr, "Can't open the SPI bus: %s\n", strerror(errno));
@@ -69,6 +70,7 @@ bool MCP_CAN::setupSpi()
     req.tv_nsec = 500000L; // nanoseconds
     nanosleep(&req, nullptr);
 //    nanosleep((const struct timespec[]){ { 0, 500000L } }, NULL);
+//    digitalWrite(gpio_can_cs, LOW);
 
     return true;
 }
@@ -80,7 +82,7 @@ bool MCP_CAN::setupSpi()
 *********************************************************************************************************/
 bool MCP_CAN::canReadData()
 {
-    return !digitalRead(gpio_can_interrupt);
+    return !digitalRead(this->gpio_can_interrupt);
 }
 
 
@@ -217,8 +219,8 @@ uint8_t MCP_CAN::mcp2515_readStatus(void)
 *********************************************************************************************************/
 uint8_t MCP_CAN::setMode(const uint8_t opMode)
 {
-    mcpMode = opMode;
-    return mcp2515_setCANCTRL_Mode(mcpMode);
+	this->mcpMode = opMode;
+    return mcp2515_setCANCTRL_Mode(this->mcpMode);
 }
 
 
@@ -595,7 +597,7 @@ uint8_t MCP_CAN::mcp2515_init(const uint8_t canIDMode, const uint8_t canSpeed, c
 
     mcp2515_reset();
 
-    mcpMode = MCP_LOOPBACK;
+    this->mcpMode = MCP_LOOPBACK;
 
     res = mcp2515_setCANCTRL_Mode(MODE_CONFIG);
     if (res > 0)
@@ -673,7 +675,7 @@ uint8_t MCP_CAN::mcp2515_init(const uint8_t canIDMode, const uint8_t canSpeed, c
         }
 
 
-        res = mcp2515_setCANCTRL_Mode(mcpMode);
+        res = mcp2515_setCANCTRL_Mode(this->mcpMode);
         if (res)
         {
 #if DEBUG_MODE
@@ -924,7 +926,7 @@ uint8_t MCP_CAN::init_Mask(uint8_t num, uint8_t ext, uint32_t ulData)
         res = MCP2515_FAIL;
     }
 
-    res = mcp2515_setCANCTRL_Mode(mcpMode);
+    res = mcp2515_setCANCTRL_Mode(this->mcpMode);
     if (res > 0)
     {
 #if DEBUG_MODE
@@ -978,7 +980,7 @@ uint8_t MCP_CAN::init_Mask(uint8_t num, uint32_t ulData)
         res = MCP2515_FAIL;
     }
 
-    res = mcp2515_setCANCTRL_Mode(mcpMode);
+    res = mcp2515_setCANCTRL_Mode(this->mcpMode);
     if (res > 0)
     {
 #if DEBUG_MODE
@@ -1043,7 +1045,7 @@ uint8_t MCP_CAN::init_Filt(uint8_t num, uint8_t ext, uint32_t ulData)
         res = MCP2515_FAIL;
     }
 
-    res = mcp2515_setCANCTRL_Mode(mcpMode);
+    res = mcp2515_setCANCTRL_Mode(this->mcpMode);
     if (res > 0)
     {
 #if DEBUG_MODE
@@ -1115,7 +1117,7 @@ uint8_t MCP_CAN::init_Filt(uint8_t num, uint32_t ulData)
         res = MCP2515_FAIL;
     }
 
-    res = mcp2515_setCANCTRL_Mode(mcpMode);
+    res = mcp2515_setCANCTRL_Mode(this->mcpMode);
     if (res > 0)
     {
 #if DEBUG_MODE

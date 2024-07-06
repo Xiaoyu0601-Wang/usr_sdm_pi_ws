@@ -24,7 +24,7 @@ class CANProtocol
   protected:
     const int SPI_CHANNEL = 0;
     const uint8_t SPI_CS_PIN = 8;
-    const uint8_t IntPIN = 25;
+    const uint8_t SPI_INT_PIN = 25;
     const uint8_t CANSpeed = CAN_500KBPS;
     const uint8_t MCPClock = MCP_12MHZ;
     const uint8_t MCPMode = MCP_NORMAL;
