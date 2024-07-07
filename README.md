@@ -33,11 +33,18 @@ sudo apt-get install ros-humble-ros-base python3-colcon-common-extensions
 sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install ros-jazzy-ros-base python3-colcon-common-extensions
 ```
-Add source and export to `~/.bashrc`
+Add source and export to `~/.bashrc`:
 ```sh
+# source ros2 humble and colcon (Ubuntu 22.02)
 echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc
 echo "export _colcon_cd_root=/opt/ros/humble/" >> ~/.bashrc
+```
+```sh
+# source ros2 jazzy and colcon (Ubuntu 24.02)
+echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc
+echo "export _colcon_cd_root=/opt/ros/jazzy/" >> ~/.bashrc
 ```
 
 ## Install WiringPi
