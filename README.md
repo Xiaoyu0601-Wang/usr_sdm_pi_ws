@@ -1,5 +1,5 @@
 # usr_sdm_pi_ws
-ROS2 Humble Workspace of Raspberry Pi Controller for Underwater Snake-like Robot with Screw-drive Mechanism
+ROS2 Humble(or Jazzy) Workspace of Raspberry Pi Controller for Underwater Snake-like Robot with Screw-drive Mechanism
 
 # Installation
 You can either build it yourself or use the prebuilt binaries:
