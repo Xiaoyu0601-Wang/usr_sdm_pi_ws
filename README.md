@@ -60,7 +60,7 @@ cd WiringPi
 ./build debian
 mv debian-template/wiringpi_3.6_arm64.deb .
 # install it
-sudo apt-get install ./wiringpi-3.0-1.deb
+sudo apt-get install ./wiringpi_3.6_arm64.deb
 ```
 
 ## Install Realsense
