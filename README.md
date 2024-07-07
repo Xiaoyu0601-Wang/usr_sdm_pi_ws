@@ -24,9 +24,14 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 ```
 Since USR-SDM client with Raspberry Pi Zero 2W is a system without a desktop, the ros-base is chosen for installation to save space.
 ```sh
-# install ros2 humble and colcon
+# install ros2 humble and colcon (Ubuntu 22.02)
 sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install ros-humble-ros-base python3-colcon-common-extensions
+```
+```sh
+# install ros2 jazzy and colcon (Ubuntu 24.02)
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install ros-jazzy-ros-base python3-colcon-common-extensions
 ```
 Add source and export to `~/.bashrc`
 ```sh
