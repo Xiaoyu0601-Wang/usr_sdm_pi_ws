@@ -85,6 +85,35 @@ sudo chown root.gpio /dev/gpiomem
 sudo chmod g+rw /dev/gpiomem
 ```
 
+## RS485-CAN-HAT
+```sh
+# Edit the config.txt file using your preferred text editor.
+sudo nano /boot/firmware/config.txt
+# Add or modify the necessary lines to configure the MCP2515 CAN controller with a 12 MHz crystal.
+# For nano, press Ctrl + X, then Y to confirm changes, and Enter to save.
+dtparam=spi=on
+dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25,spimaxfrequency=2000000
+# Check if the CAN interface is available:
+sudo apt-get install net-tools
+ifconfig -a
+# Load the necessary kernel modules:
+sudo modprobe can
+sudo modprobe can_dev
+sudo modprobe mcp251x
+# To make the modules load at boot, add them to /etc/modules:
+echo "can" | sudo tee -a /etc/modules
+echo "can_dev" | sudo tee -a /etc/modules
+echo "mcp251x" | sudo tee -a /etc/modules
+# Bring up the CAN interface with the desired bitrate (e.g., 500000):
+sudo ip link set can0 up type can bitrate 500000
+```
+### Install CAN Utilities
+Install the can-utils package to test and work with the CAN interface:
+```sh
+sudo apt install can-utils
+cansend can0 123#11223344AABBCCDD
+```
+
 ## Install Realsense
 
 
