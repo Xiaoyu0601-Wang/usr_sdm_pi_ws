@@ -38,7 +38,23 @@ void printCANMsg()
 
 CANProtocol::CANProtocol()
 {
-//	interfaceSetup();
+	system("sudo ip link set can0 up type can bitrate 500000");
+
+//    //1.Create socket
+//    int s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
+//    if (s < 0) {
+//        perror("socket PF_CAN failed");
+////        return 1;
+//    }
+//
+//    //2.Specify can0 device
+//    strcpy(ifr.ifr_name, "can0");
+//    ret = ioctl(s, SIOCGIFINDEX, &ifr);
+//    if (ret < 0) {
+//        perror("ioctl failed");
+//        return 1;
+//    }
+
 	printf("CAN initialized.\n");
 }
 

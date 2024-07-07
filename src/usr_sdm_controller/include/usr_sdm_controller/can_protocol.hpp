@@ -7,6 +7,14 @@
 #include <cstring>
 #include <cstdio>
 #include <ctime>
+#include <cstdlib>
+
+#include <unistd.h>
+#include <net/if.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <linux/can.h>
+#include <linux/can/raw.h>
 
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
@@ -28,6 +36,10 @@ class CANProtocol
     const uint8_t CANSpeed = CAN_500KBPS;
     const uint8_t MCPClock = MCP_12MHZ;
     const uint8_t MCPMode = MCP_NORMAL;
+
+    struct sockaddr_can addr;
+    struct ifreq ifr;
+    struct can_frame frame;
 //    const uint8_t CAN_EXT = 1;
 
 //  public:

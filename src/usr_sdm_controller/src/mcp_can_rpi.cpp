@@ -220,6 +220,7 @@ uint8_t MCP_CAN::mcp2515_readStatus(void)
 uint8_t MCP_CAN::setMode(const uint8_t opMode)
 {
 	this->mcpMode = opMode;
+	digitalWrite(this->gpio_can_cs, LOW);
     return mcp2515_setCANCTRL_Mode(this->mcpMode);
 }
 
