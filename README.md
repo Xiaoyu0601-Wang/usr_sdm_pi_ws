@@ -15,9 +15,9 @@ Use Raspberry Pi Imager to set up the image loader.
 For the USR-SDM client, ROS2 Humble is used on the Ubuntu 22.04 server for Raspberry Pi Zero 2W.
 ```sh
 # install necessary packages
-sudo apt install build-essential cmake git locales curl wget gnupg lsb-release python3 python3-pip vim
+sudo apt-get install build-essential cmake git locales curl wget gnupg lsb-release python3 python3-pip vim
 # add ros2 repository
-sudo apt install software-properties-common
+sudo apt-get install software-properties-common
 sudo add-apt-repository universe
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
@@ -26,7 +26,7 @@ Since USR-SDM client with Raspberry Pi Zero 2W is a system without a desktop, th
 ```sh
 # install ros2 humble and colcon
 sudo apt-get update && sudo apt-get upgrade
-sudo apt install ros-humble-ros-base python3-colcon-common-extensions
+sudo apt-get install ros-humble-ros-base python3-colcon-common-extensions
 ```
 Add source and export to `~/.bashrc`
 ```sh
@@ -41,14 +41,14 @@ WiringPi is a performant GPIO access library written in C for Raspberry Pi board
 Create Debian-package
 ```sh
 # fetch the source
-sudo apt install git
+sudo apt-get install git
 git clone https://github.com/WiringPi/WiringPi.git
 cd WiringPi
 # build the package
 ./build debian
 mv debian-template/wiringpi-3.0-1.deb .
 # install it
-sudo apt install ./wiringpi-3.0-1.deb
+sudo apt-get install ./wiringpi-3.0-1.deb
 ```
 
 ## Install Realsense
