@@ -62,6 +62,28 @@ mv debian-template/wiringpi_3.6_arm64.deb .
 # install it
 sudo apt-get install ./wiringpi_3.6_arm64.deb
 ```
+### Access GPIO pins without root
+```sh
+sudo apt-get install rpi.gpio-common
+# Create a gpio group:
+sudo groupadd gpio
+# Add your user to the gpio group:
+sudo usermod -aG gpio $USER
+# Create a udev rule file:
+sudo nano /etc/udev/rules.d/99-gpio.rules
+# Add the following lines to the file:
+SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpiochip0"
+SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiochip0"
+SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpio*"
+SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpio*"
+SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpiomem"
+SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiomem"
+# 
+sudo adduser "${USER}" dialout
+# 
+sudo chown root.gpio /dev/gpiomem
+sudo chmod g+rw /dev/gpiomem
+```
 
 ## Install Realsense
 
