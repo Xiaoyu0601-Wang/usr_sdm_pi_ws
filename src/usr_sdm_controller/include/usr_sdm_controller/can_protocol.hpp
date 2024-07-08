@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <ctime>
 #include <cstdlib>
+#include <vector>
 
 #include <unistd.h>
 #include <net/if.h>
@@ -37,10 +38,16 @@ class CANProtocol
     const uint8_t MCPClock = MCP_12MHZ;
     const uint8_t MCPMode = MCP_NORMAL;
 
+    int ret;
+    int s, nbytes;
     struct sockaddr_can addr;
     struct ifreq ifr;
     struct can_frame frame;
 //    const uint8_t CAN_EXT = 1;
+
+    void writeCANMsg(uint16_t screwUnitID, std::vector<uint8_t> &msg);
+    void readCANMsg(uint16_t screwUnitID, std::vector<uint8_t> *msg);
+    void writeRS485Msg(uint16_t jointUnitID, std::vector<uint8_t> &msg);
 
 //  public:
 //    MCP_CAN::Ptr CAN;
@@ -55,7 +62,6 @@ class CANProtocol
 //    static MCP_CAN CAN;
 
     void interfaceSetup(void);
-//    static void printCANMsg(const MCP_CAN& can);
 //    static void printCANMsg();
 
     typedef std::unique_ptr<CANProtocol> Ptr;
