@@ -1,5 +1,5 @@
 # usr_sdm_pi_ws
-ROS2 Humble Workspace of Raspberry Pi Controller for Underwater Snake-like Robot with Screw-drive Mechanism
+ROS2 Humble(or Jazzy) Workspace of Raspberry Pi Controller for Underwater Snake-like Robot with Screw-drive Mechanism
 
 # Installation
 You can either build it yourself or use the prebuilt binaries:
@@ -86,6 +86,7 @@ sudo chmod g+rw /dev/gpiomem
 ```
 
 ## RS485-CAN-HAT
+Website: https://www.waveshare.com/wiki/RS485_CAN_HAT
 ```sh
 # Edit the config.txt file using your preferred text editor.
 sudo nano /boot/firmware/config.txt
