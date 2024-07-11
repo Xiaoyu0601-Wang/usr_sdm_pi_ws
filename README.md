@@ -81,7 +81,7 @@ SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chmod g+rw /dev/
 # 
 sudo adduser "${USER}" dialout
 # 
-sudo chown root.gpio /dev/gpiomem
+sudo chown root:gpio /dev/gpiomem
 sudo chmod g+rw /dev/gpiomem
 ```
 
