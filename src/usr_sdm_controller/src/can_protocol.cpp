@@ -38,6 +38,9 @@ namespace usrsdm
 
 CANProtocol::CANProtocol()
 {
+	/**
+	 * CAN
+	 * */
 	memset(&frame, 0, sizeof(struct can_frame));
 	system("sudo ip link set can0 up type can bitrate 500000");
 
@@ -66,14 +69,36 @@ CANProtocol::CANProtocol()
 	}
 
 	printf("CAN is initialized.\n");
+
+	/**
+	 * RS485
+	 * */
+    if(wiringPiSetupGpio() < 0) { //use BCM2835 Pin number table
+        printf("set wiringPi lib failed	!!! \r\n");
+    } else {
+        printf("set wiringPi lib success  !!! \r\n");
+    }
+    pinMode(RS485_TX_RX_PIN, OUTPUT);
+
+    if((fd = serialOpen ("/dev/ttyS0",57600)) < 0) {
+        printf("serial err\n");
+    }
 }
 
 CANProtocol::~CANProtocol()
 {
+	/**
+	 * CAN
+	 * */
 	//7.Close the socket and can0
 	close(s);
 	system("sudo ifconfig can0 down");
 	printf("CAN is closed.\n");
+
+	/**
+	 * RS485
+	 * */
+    serialClose(fd);
 }
 
 void CANProtocol::interfaceSetup(void)
@@ -204,6 +229,7 @@ void CANProtocol::readCANMsg(uint16_t screwUnitID, std::vector<uint8_t> *msg)
 
 void CANProtocol::writeRS485Msg(uint16_t jointUnitID, std::vector<uint8_t> &msg)
 {
+	digitalWrite(RS485_TX_RX_PIN, HIGH);
 
 }
 

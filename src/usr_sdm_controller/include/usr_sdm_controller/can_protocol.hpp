@@ -19,9 +19,9 @@
 
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+#include <wiringSerial.h>
 
 #include "usr_sdm_controller/mcp_can_rpi.hpp"
-//#include "mcp2515.h"
 
 namespace amp
 {
@@ -38,6 +38,11 @@ class CANProtocol
     const uint8_t MCPClock = MCP_12MHZ;
     const uint8_t MCPMode = MCP_NORMAL;
 
+    //RS485
+    int fd;
+    const uint8_t RS485_TX_RX_PIN = 4;
+
+    //CAN
     int ret;
     int s, nbytes;
     struct sockaddr_can addr;
