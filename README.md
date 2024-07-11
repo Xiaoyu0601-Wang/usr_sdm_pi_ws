@@ -72,12 +72,8 @@ sudo usermod -aG gpio $USER
 # Create a udev rule file:
 sudo nano /etc/udev/rules.d/99-gpio.rules
 # Add the following lines to the file:
-SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpiochip0"
-SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiochip0"
-SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpio*"
-SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpio*"
-SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpiomem"
-SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiomem"
+SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", PROGRAM="/bin/sh -c 'chown -R root:gpio /dev/gpiomem && chmod -R 770 /dev/gpiomem'"
+SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", PROGRAM="/bin/sh -c 'chown -R root:gpio /dev/gpiomem && chmod -R 770 /dev/gpiomem'"
 #
 sudo udevadm control --reload-rules
 sudo udevadm trigger
@@ -87,6 +83,16 @@ sudo adduser "${USER}" dialout
 # 
 sudo chown root:gpio /dev/gpiomem
 sudo chmod g+rw /dev/gpiomem
+```
+
+```sh
+# Wasted
+SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpiochip0"
+SUBSYSTEM=="gpio", KERNEL=="gpiochip*", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiochip0"
+SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpio*"
+SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpio*"
+SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpiomem"
+SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiomem"
 ```
 
 ## RS485-CAN-HAT
