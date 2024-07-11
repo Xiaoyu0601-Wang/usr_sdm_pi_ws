@@ -78,6 +78,10 @@ SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gp
 SUBSYSTEM=="gpio", KERNEL=="gpio*", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpio*"
 SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chgrp gpio /dev/gpiomem"
 SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiomem"
+#
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+sudo reboot
 # 
 sudo adduser "${USER}" dialout
 # 
