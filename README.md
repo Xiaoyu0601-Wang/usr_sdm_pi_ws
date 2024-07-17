@@ -126,9 +126,33 @@ cansend can0 123#11223344AABBCCDD
 ```
 
 ## Install Realsense
+The RealSense SDK requires some dependencies. Install them using the following commands:
+```sh
+sudo apt-get install git cmake libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev
+```
 
+Clone the Intel RealSense repository and build the SDK.
+```sh
+# Clone the repository
+git clone https://github.com/IntelRealSense/librealsense.git
+cd librealsense
+# Checkout the stable branch
+git checkout stable
+# Create a build directory
+mkdir build
+cd build
+# Build the SDK
+cmake ../ -DFORCE_LIBUVC=true -DCMAKE_BUILD_TYPE=release
+make -j4
+sudo make install
+```
+Intel RealSense devices require udev rules to be set up properly.
+```sh
+sudo cp config/99-realsense-libusb.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules && udevadm trigger
+```
 
-# Optimize Build Environment
+# Optimize Building Environment
 ## Use Swap Space
 Increase the swap space to provide more virtual memory for the build process.
 ```sh
