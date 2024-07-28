@@ -95,7 +95,7 @@ SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chgrp gpio /dev/
 SUBSYSTEM=="gpio", KERNEL=="gpiomem", ACTION=="add", RUN+="/bin/chmod g+rw /dev/gpiomem"
 ```
 
-## RS485-CAN-HAT
+## RS485-CAN-HAT from WaveShare
 Website: https://www.waveshare.com/wiki/RS485_CAN_HAT
 ```sh
 # Edit the config.txt file using your preferred text editor.
